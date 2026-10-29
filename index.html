@@ -152,6 +152,52 @@
     .row span{text-align:left}
   }
 </style>
+<style>
+  /* ===== motion layer ===== */
+  :root{--spring:cubic-bezier(.34,1.56,.64,1);--glide:cubic-bezier(.22,1,.36,1)}
+
+  /* hero entrance: one orchestrated sequence */
+  .hero h1,.hero .lede,.hero .actions,.hero-side{opacity:0;transform:translateY(28px)}
+  .loaded .hero h1,.loaded .hero .lede,.loaded .hero .actions,.loaded .hero-side{opacity:1;transform:none;transition:opacity .9s var(--glide),transform 1s var(--glide)}
+  .loaded .hero .lede{transition-delay:.12s}
+  .loaded .hero .actions{transition-delay:.24s}
+  .loaded .hero-side{transition-delay:.18s}
+  .avatar{animation:float 6s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+  /* buttons: springy, magnetic */
+  .btn{transition:transform .5s var(--spring),box-shadow .4s var(--glide),background .3s,color .3s!important;will-change:transform}
+  .btn:active{transform:scale(.94)!important;transition-duration:.12s!important}
+
+  /* cards: glide + cursor spotlight */
+  .proj,.hobby,.skills,.strip>div,.piano-box{position:relative;overflow:hidden;transition:transform .6s var(--glide),box-shadow .6s var(--glide),background .45s,color .45s!important}
+  .proj::before,.hobby::before,.skills::before,.strip>div::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .4s;
+    background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(47,59,176,.09),transparent 60%)}
+  .proj:hover::before,.hobby:hover::before,.skills:hover::before,.strip>div:hover::before{opacity:1}
+  .proj:hover,.hobby:hover{transform:translateY(-6px)}
+  .hobby:active{transform:scale(.97)}
+  .hobby[aria-expanded="true"]::before{background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.12),transparent 60%)}
+  .hobby .more{transition:grid-template-rows .55s var(--glide),opacity .45s var(--glide)!important}
+  .hobby .hint{transition:opacity .3s}
+
+  .chips span{transition:transform .45s var(--spring),background .25s,color .25s!important}
+  .chips span:hover{transform:translateY(-3px) scale(1.05)}
+
+  .proj summary .plus{transition:transform .5s var(--spring)!important}
+
+  /* piano keys bounce */
+  .white,.black{transition:transform .35s var(--spring),background .2s!important}
+  .white.on,.white:active{transform:translateY(4px) scaleY(.98)}
+
+  /* scroll reveal, staggered */
+  .rise{opacity:0;transform:translateY(36px);transition:opacity .9s var(--glide),transform 1s var(--glide)}
+  .rise.in{opacity:1;transform:none}
+
+  @media (prefers-reduced-motion:reduce){
+    .hero h1,.hero .lede,.hero .actions,.hero-side,.rise{opacity:1!important;transform:none!important}
+    .avatar{animation:none}
+  }
+</style>
 </head>
 <body>
 
@@ -364,6 +410,44 @@
       card.setAttribute('aria-expanded', card.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
     });
   });
+</script>
+<script>
+  (() => {
+    const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('loaded')));
+    if (calm) return;
+
+    /* staggered scroll reveal */
+    const groups = ['.sec-head', '.proj', '.skills', '.hobby', '.piano-box', '.strip > div', '.contact h2', '.contact p', '.contact .actions'];
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }), { threshold: .15, rootMargin: '0px 0px -40px 0px' });
+    groups.forEach(sel => document.querySelectorAll(sel).forEach((el, i) => {
+      el.classList.add('rise'); el.style.transitionDelay = (i % 4) * 90 + 'ms'; io.observe(el);
+      el.addEventListener('transitionend', () => { el.style.transitionDelay = ''; }, { once: true });
+    }));
+
+    /* cursor spotlight on cards */
+    document.querySelectorAll('.proj, .hobby, .skills, .strip > div').forEach(el => {
+      el.addEventListener('pointermove', e => {
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+    });
+
+    /* magnetic buttons */
+    if (matchMedia('(hover: hover)').matches) {
+      document.querySelectorAll('.btn').forEach(b => {
+        b.addEventListener('pointermove', e => {
+          const r = b.getBoundingClientRect();
+          const x = (e.clientX - r.left - r.width / 2) * .18, y = (e.clientY - r.top - r.height / 2) * .3;
+          b.style.transform = `translate(${x}px, ${y - 2}px)`;
+        });
+        b.addEventListener('pointerleave', () => { b.style.transform = ''; });
+      });
+    }
+  })();
 </script>
 </body>
 </html>
