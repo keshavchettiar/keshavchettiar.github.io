@@ -39,8 +39,9 @@
   .hero h1{font-size:clamp(50px,8vw,92px);font-weight:800}
   .hero .lede{font-size:21px;margin-top:22px;max-width:30ch;color:#E6E8FF}
   .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
-  .btn{display:inline-block;padding:13px 22px;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;border:2px solid currentColor;transition:transform .15s,background .15s}
-  .btn:hover{transform:translateY(-2px)}
+  .btn{display:inline-block;transition:transform .18s cubic-bezier(.3,1.6,.5,1),box-shadow .18s,background .18s;padding:13px 22px;border-radius:999px;font-weight:700;font-size:15px;text-decoration:none;border:2px solid currentColor;transition:transform .15s,background .15s}
+  .btn:hover{transform:translateY(-3px);box-shadow:0 10px 20px -12px rgba(22,26,51,.55)}
+  .btn:active{transform:translateY(0) scale(.96);box-shadow:none}
   .btn.sun{background:var(--sun);border-color:var(--sun);color:var(--ink)}
   .btn.ghost{color:var(--white)}
   .btn.ghost:hover{background:var(--indigo-dark)}
@@ -49,8 +50,16 @@
   .avatar{width:210px;height:210px;border-radius:50%;border:6px solid var(--sun);overflow:hidden;background:#5763D0;display:flex;align-items:center;justify-content:center;font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:64px;color:#C3C8FF}
   .avatar img{width:100%;height:100%;object-fit:cover;display:block}
 
-  .piano-box{background:var(--indigo-dark);border-radius:18px;padding:16px 16px 14px;width:100%;max-width:400px}
-  .piano-box p{font-size:14px;color:#C9CDFA;margin-bottom:12px;text-align:center}
+  .status{display:inline-flex;align-items:center;gap:10px;background:var(--white);color:var(--ink);font-weight:700;font-size:15px;padding:10px 18px;border-radius:999px;margin-top:-46px;position:relative;box-shadow:0 10px 24px -14px rgba(0,0,0,.5)}
+  .dot{width:10px;height:10px;border-radius:50%;background:#22C55E;position:relative}
+  .dot::after{content:"";position:absolute;inset:0;border-radius:50%;background:#22C55E;animation:ping 1.8s ease-out infinite}
+  @keyframes ping{from{transform:scale(1);opacity:.7}to{transform:scale(2.8);opacity:0}}
+  .hero-side{gap:0}
+  .avatar{width:260px;height:260px}
+  .piano-box{margin-top:24px;background:var(--indigo);color:var(--white);border-radius:24px;padding:26px 30px;display:grid;grid-template-columns:1fr 1.2fr;gap:32px;align-items:center}
+  .piano-text h3{font-size:24px;font-weight:800}
+  .piano-text p{color:#D3D7FF;margin-top:6px;font-size:15px}
+  .now-playing{text-align:left!important}
   .piano{position:relative;display:flex;height:120px;user-select:none;-webkit-user-select:none;touch-action:manipulation}
   .white{flex:1;background:var(--white);border:1px solid #C7CBEA;border-radius:0 0 8px 8px;margin:0 1.5px;cursor:pointer;position:relative;transition:background .08s,transform .08s}
   .white.on,.white:active{background:var(--sun);transform:translateY(2px)}
@@ -72,8 +81,10 @@
   .proj h3{font-size:34px;font-weight:800;margin-top:18px}
   .proj .what{color:var(--soft);margin-top:6px;font-size:18px}
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
-  .chips span{font-size:13px;font-weight:600;padding:5px 11px;border-radius:999px;background:var(--sky);color:var(--indigo)}
+  .chips span{transition:background .15s,color .15s,transform .15s;font-size:13px;font-weight:600;padding:5px 11px;border-radius:999px;background:var(--sky);color:var(--indigo)}
   .proj details{margin-top:24px;border-top:1px solid #E3E6F6;padding-top:16px}
+  .proj summary:hover .plus{transform:scale(1.15)}
+  .proj details[open] summary:hover .plus{transform:rotate(45deg) scale(1.15)}
   .proj summary{cursor:pointer;font-weight:700;color:var(--indigo);list-style:none;display:flex;align-items:center;gap:8px}
   .proj summary::-webkit-details-marker{display:none}
   .proj summary .plus{display:inline-flex;width:24px;height:24px;border-radius:50%;background:var(--indigo);color:var(--white);align-items:center;justify-content:center;font-size:16px;line-height:1;transition:transform .2s}
@@ -82,22 +93,29 @@
   .proj details li{margin-bottom:8px}
   .proj details li::marker{color:var(--indigo)}
 
+  .chips span:hover{background:var(--indigo);color:var(--white);transform:translateY(-2px)}
+  .proj{transition:transform .2s,box-shadow .2s}
+  .proj:hover{transform:translateY(-4px);box-shadow:0 18px 36px -24px rgba(47,59,176,.55)}
+
   /* skills */
   .skills{background:var(--white);border-radius:24px;padding:30px;display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
   .skills h3{font-size:18px;font-weight:600;margin-bottom:12px}
   .skills .chips{margin-top:0}
 
   /* hobbies */
-  .hobbies{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .hobbies{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
   .hobby{background:var(--white);border:0;border-radius:22px;padding:24px 22px;text-align:left;font:inherit;color:inherit;cursor:pointer;min-height:190px;display:flex;flex-direction:column;justify-content:space-between;transition:background .2s,color .2s,transform .15s}
-  .hobby:hover{transform:translateY(-3px)}
+  .hobby:hover{transform:translateY(-4px);box-shadow:0 14px 28px -18px rgba(47,59,176,.6)}
+  .hobby:active{transform:scale(.98)}
   .hobby .big{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:26px;line-height:1.1}
   .hobby .stat{font-size:14px;color:var(--soft);margin-top:6px}
-  .hobby .more{font-size:15px;line-height:1.5;margin-top:14px;display:none}
+  .hobby .more{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .35s ease,opacity .25s ease}
+  .hobby .more > div{overflow:hidden}
+  .hobby .more p{font-size:15px;line-height:1.5;padding-top:14px}
   .hobby .hint{font-size:13px;font-weight:700;color:var(--indigo);margin-top:14px}
   .hobby[aria-expanded="true"]{background:var(--indigo);color:var(--white)}
   .hobby[aria-expanded="true"] .stat{color:#C9CDFA}
-  .hobby[aria-expanded="true"] .more{display:block}
+  .hobby[aria-expanded="true"] .more{grid-template-rows:1fr;opacity:1}
   .hobby[aria-expanded="true"] .hint{display:none}
 
   /* background strip */
@@ -118,15 +136,14 @@
   .contact .btn.dark{background:var(--ink);border-color:var(--ink);color:var(--white)}
   .contact footer{margin-top:72px;font-size:14px;color:#6B5A10}
 
-  @media (max-width:900px){
-    .hobbies{grid-template-columns:1fr 1fr}
-  }
   @media (max-width:780px){
     .hero-grid,.projects,.strip{grid-template-columns:1fr}
     .hero-grid{gap:40px;padding-top:16px}
     .skills{grid-template-columns:1fr;gap:20px}
     .top nav a.opt{display:none}
-    .avatar{width:170px;height:170px}
+    .avatar{width:200px;height:200px}
+    .piano-box{grid-template-columns:1fr;gap:18px;padding:24px}
+    .hobbies{grid-template-columns:1fr}
   }
   @media (max-width:420px){
     .hobbies{grid-template-columns:1fr}
@@ -152,10 +169,10 @@
     <div class="hero-grid">
       <div>
         <h1>Hey, I'm Keshav.</h1>
-        <p class="lede">Second-year IT student at Temasek Poly. I build apps that work properly from start to finish, and I'm looking for an internship.</p>
+        <p class="lede">Second-year IT student at Temasek Poly. I build websites and apps that work properly from start to finish, and I'm looking for an internship.</p>
         <div class="actions">
           <a class="btn sun" href="#work">See what I've built</a>
-          <a class="btn ghost" href="resume.pdf" target="_blank" rel="noopener">Résumé (PDF)</a>
+          <a class="btn ghost" href="resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
         </div>
       </div>
 
@@ -163,11 +180,7 @@
         <div class="avatar" id="avatar">
           <img src="photo.jpg" alt="Photo of Keshav" onerror="this.remove();document.getElementById('avatar').textContent='KC'">
         </div>
-        <div class="piano-box">
-          <p>I'm Grade 6 on piano. Have a go, or use your keyboard.</p>
-          <div class="piano" id="piano" aria-label="Playable piano keyboard"></div>
-          <div class="now-playing" id="nowPlaying" aria-live="polite"></div>
-        </div>
+        <div class="status"><span class="dot" aria-hidden="true"></span> Open to internships</div>
       </div>
     </div>
   </div>
@@ -232,29 +245,32 @@
     <div class="wrap">
       <div class="sec-head">
         <h2>When I'm not coding</h2>
-        <p>Tap a card to hear a bit more.</p>
+        <p>Tap a card to read more.</p>
       </div>
       <div class="hobbies">
         <button class="hobby" aria-expanded="false">
           <div><div class="big">Piano</div><div class="stat">Grade 6, practical and theory</div></div>
-          <div class="more">These days I mostly learn songs I actually like, from sheet music. Right now that's "Blue" by Yung Kai.</div>
+          <div class="more"><div><p>These days I mostly learn songs I actually like, from sheet music. Right now that's "Blue" by Yung Kai.</p></div></div>
           <div class="hint">Tap to read</div>
         </button>
         <button class="hobby" aria-expanded="false">
           <div><div class="big">Kyokushin karate</div><div class="stat">5th Kyu</div></div>
-          <div class="more">It's full-contact. Getting through a hard session taught me to keep going when something gets uncomfortable.</div>
+          <div class="more"><div><p>It's full-contact. Getting through a hard session taught me to keep going when something gets uncomfortable.</p></div></div>
           <div class="hint">Tap to read</div>
         </button>
         <button class="hobby" aria-expanded="false">
           <div><div class="big">Badminton</div><div class="stat">Head of Administration, 2 years</div></div>
-          <div class="more">I competed for my secondary school and ran the CCA's admin side: schedules, logistics, and keeping the team organised.</div>
+          <div class="more"><div><p>I competed for my secondary school and ran the CCA's admin side: schedules, logistics, and keeping the team organised.</p></div></div>
           <div class="hint">Tap to read</div>
         </button>
-        <button class="hobby" aria-expanded="false">
-          <div><div class="big">Sim racing</div><div class="stat">Assetto Corsa</div></div>
-          <div class="more">On a laptop with a controller, which isn't the ideal setup. I'm still chasing faster lap times.</div>
-          <div class="hint">Tap to read</div>
-        </button>
+      </div>
+      <div class="piano-box">
+        <div class="piano-text">
+          <h3>Since I mentioned piano</h3>
+          <p>Here's a small one. Click the keys, or press A to K on your keyboard.</p>
+          <div class="now-playing" id="nowPlaying" aria-live="polite"></div>
+        </div>
+        <div class="piano" id="piano" aria-label="Playable piano keyboard"></div>
       </div>
     </div>
   </section>
@@ -327,6 +343,19 @@
   document.addEventListener('keydown', e => {
     if (e.repeat || e.target.closest('input,textarea')) return;
     const fn = keyMap[e.key.toUpperCase()]; if (fn) fn();
+  });
+
+  /* ---------- smooth open for project details ---------- */
+  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('.proj details').forEach(d => {
+    d.querySelector('summary').addEventListener('click', e => {
+      if (calm || d.open) return;
+      requestAnimationFrame(() => {
+        d.querySelector('ul').animate(
+          [{opacity:0, transform:'translateY(-8px)'}, {opacity:1, transform:'none'}],
+          {duration:300, easing:'ease-out'});
+      });
+    });
   });
 
   /* ---------- hobby cards ---------- */
