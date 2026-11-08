@@ -120,6 +120,17 @@
   .skills b { color: var(--text); }
 
 
+  .show-piano {
+    margin-top: 16px; padding: 9px 16px; border: 0; border-radius: 999px; cursor: pointer;
+    background: var(--soft-bg); color: var(--text); font: inherit; font-weight: 600; font-size: 15px;
+    transition: background .25s, color .25s, transform .3s cubic-bezier(.34, 1.56, .64, 1);
+  }
+  .show-piano:hover { transform: translateY(-2px); background: var(--link); color: var(--on-link); }
+  .show-piano:active { transform: scale(.95); }
+  .show-piano[aria-expanded="true"] { background: var(--link); color: var(--on-link); }
+  .piano-box { height: 0; overflow: hidden; }
+  .piano-box.shown { height: auto; }
+  .piano-box .hint { font-size: 14px; color: var(--muted); margin-top: 8px; }
   .piano { position: relative; display: flex; gap: 3px; height: 96px; max-width: 340px; margin-top: 16px; user-select: none; touch-action: manipulation; }
   .piano button { cursor: pointer; border: 0; padding: 0; }
   .piano .w { flex: 1; background: #FFDEC7; border-radius: 0 0 8px 8px; transition: background .12s; }
@@ -224,8 +235,12 @@
       <article class="card">
         <h3>Piano</h3>
         <div class="meta">Grade 6, practical and theory</div>
-        <p>These days I mostly learn songs I like from sheet music, it's how I unwind after a long day. I also coded this small piano, so give it a go (the A to K keys work too):</p>
-        <div class="piano" id="piano" aria-label="Small playable piano"></div>
+        <p>These days I mostly learn songs I like from sheet music, it's how I unwind after a long day. I also coded a small piano for this site.</p>
+        <button class="show-piano" id="showPiano" aria-expanded="false" aria-controls="pianoBox">Show piano <span aria-hidden="true">&#9834;</span></button>
+        <div class="piano-box" id="pianoBox">
+          <div class="piano" id="piano" aria-label="Small playable piano"></div>
+          <p class="hint">Click the keys, or use A to K on your keyboard.</p>
+        </div>
       </article>
 
       <article class="card">
@@ -333,6 +348,26 @@
     });
   });
 
+  // "Show piano" button: slide the piano open and closed.
+  const showBtn = document.getElementById('showPiano');
+  const pianoBox = document.getElementById('pianoBox');
+  showBtn.addEventListener('click', () => {
+    const open = showBtn.getAttribute('aria-expanded') !== 'true';
+    showBtn.setAttribute('aria-expanded', open);
+    showBtn.firstChild.textContent = open ? 'Hide piano ' : 'Show piano ';
+    pianoBox.getAnimations().forEach(a => a.cancel());
+    const from = pianoBox.offsetHeight;
+    pianoBox.classList.add('shown');
+    const to = open ? pianoBox.scrollHeight : 0;
+    const anim = pianoBox.animate(
+      [{ height: from + 'px', opacity: open ? 0 : 1 }, { height: to + 'px', opacity: open ? 1 : 0 }],
+      { duration: reduceMotion ? 200 : 500, easing: ease });
+    anim.onfinish = () => {
+      if (!open) pianoBox.classList.remove('shown');
+      relayout();
+    };
+  });
+
   // Piano: notes are generated with the Web Audio API, no sound files.
   const whites = [['C', 261.63, 'a'], ['D', 293.66, 's'], ['E', 329.63, 'd'], ['F', 349.23, 'f'],
                   ['G', 392.00, 'g'], ['A', 440.00, 'h'], ['B', 493.88, 'j'], ['C', 523.25, 'k']];
@@ -414,7 +449,7 @@
   blacks.forEach(([note, freq, i, letter]) => addKey('b', note, freq, letter, (i + 1) / whites.length * 100 - 4));
 
   document.addEventListener('keydown', e => {
-    if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.repeat || e.ctrlKey || e.metaKey || e.altKey || !pianoBox.classList.contains('shown')) return;
     const k = keys[e.key.toLowerCase()];
     if (k) k();
   });
