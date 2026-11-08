@@ -90,7 +90,7 @@
     padding: 24px 26px 72px; position: relative; overflow: hidden;
     transition: border-color .4s;
   }
-  .card:hover, .card.open { border-color: var(--line-strong); }
+  .card:hover, .card.open { border-color: var(--line); }
   .card h3 { font-size: 22px; }
   .hobbies .card h3 { font-size: 19px; }
   .card .meta { color: var(--accent2); font-size: 15px; margin-top: 2px; }
@@ -105,7 +105,7 @@
 
   .plus {
     position: absolute; right: 18px; bottom: 18px; width: 40px; height: 40px; border-radius: 50%;
-    border: 1px solid var(--line-strong); background: var(--soft-bg); color: var(--text); cursor: pointer;
+    border: 0; background: var(--soft-bg); color: var(--text); cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: background .3s, color .3s, border-color .3s, transform .45s cubic-bezier(.34, 1.56, .64, 1);
   }
