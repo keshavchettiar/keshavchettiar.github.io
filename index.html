@@ -120,12 +120,14 @@
   .skills b { color: var(--text); }
 
 
-  .piano { position: relative; display: flex; height: 96px; max-width: 340px; margin-top: 14px; user-select: none; touch-action: manipulation; }
+  .piano { position: relative; display: flex; gap: 3px; height: 96px; max-width: 340px; margin-top: 16px; user-select: none; touch-action: manipulation; }
   .piano button { cursor: pointer; border: 0; padding: 0; }
-  .piano .w { flex: 1; background: var(--key); border: 1px solid var(--key-line); border-radius: 0 0 6px 6px; margin: 0 1px; transition: background .12s; }
-  .piano .w.on { background: var(--link); }
-  .piano .b { position: absolute; top: 0; width: 9%; height: 60%; background: var(--key-black); border-radius: 0 0 4px 4px; z-index: 2; transition: background .12s; }
-  .piano .b.on { background: var(--key-black-on); }
+  .piano .w { flex: 1; background: #FFDEC7; border-radius: 0 0 8px 8px; transition: background .12s; }
+  .piano .w:hover { background: #FFD2B4; }
+  .piano .w.on { background: #EFA3A0; }
+  .piano .b { position: absolute; top: 0; width: 8%; height: 58%; background: #493129; border-radius: 0 0 6px 6px; z-index: 2; transition: background .12s; }
+  .piano .b:hover { background: #5E4238; }
+  .piano .b.on { background: #8B597B; }
 
   .list li { list-style: none; padding: 12px 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; }
   .list li:first-child { border-top: 0; padding-top: 0; }
@@ -340,22 +342,60 @@
   const keys = {};
   let audio;
 
+  // A real piano string rings with several overtones that fade at different
+  // speeds, and the hammer gives a soft "thunk" at the start. This layers a
+  // few sine waves to imitate that, then softens it with a low-pass filter.
+  const overtones = [[1, 1], [2, 0.45], [3, 0.22], [4, 0.12], [5, 0.06], [6, 0.03]];
+
   function play(freq, key) {
     audio = audio || new (window.AudioContext || window.webkitAudioContext)();
-    const osc = audio.createOscillator();
-    const vol = audio.createGain();
     const t = audio.currentTime;
-    osc.type = 'triangle';
-    osc.frequency.value = freq;
-    vol.gain.setValueAtTime(0.0001, t);
-    vol.gain.exponentialRampToValueAtTime(0.3, t + 0.01);
-    vol.gain.exponentialRampToValueAtTime(0.0001, t + 1.2);
-    osc.connect(vol).connect(audio.destination);
-    osc.start(t);
-    osc.stop(t + 1.25);
+    const length = 2.6 - freq / 600;
+
+    const tone = audio.createBiquadFilter();
+    tone.type = 'lowpass';
+    tone.frequency.setValueAtTime(freq * 8, t);
+    tone.frequency.exponentialRampToValueAtTime(freq * 2.5, t + 0.6);
+
+    const master = audio.createGain();
+    master.gain.setValueAtTime(0.0001, t);
+    master.gain.exponentialRampToValueAtTime(0.32, t + 0.006);
+    master.gain.exponentialRampToValueAtTime(0.12, t + 0.35);
+    master.gain.exponentialRampToValueAtTime(0.0001, t + length);
+    tone.connect(master).connect(audio.destination);
+
+    overtones.forEach(([n, level]) => {
+      [-1.2, 1.2].forEach(cents => {
+        const osc = audio.createOscillator();
+        const g = audio.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = freq * n * Math.pow(2, cents / 1200);
+        g.gain.setValueAtTime(level / 2, t);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + length / (1 + n * 0.6));
+        osc.connect(g).connect(tone);
+        osc.start(t);
+        osc.stop(t + length);
+      });
+    });
+
+    // hammer thunk: a very short burst of filtered noise
+    const noise = audio.createBuffer(1, audio.sampleRate * 0.03, audio.sampleRate);
+    const data = noise.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / data.length);
+    const hit = audio.createBufferSource();
+    const hitFilter = audio.createBiquadFilter();
+    const hitGain = audio.createGain();
+    hit.buffer = noise;
+    hitFilter.type = 'lowpass';
+    hitFilter.frequency.value = 1800;
+    hitGain.gain.value = 0.05;
+    hit.connect(hitFilter).connect(hitGain).connect(audio.destination);
+    hit.start(t);
+
     key.classList.add('on');
     setTimeout(() => key.classList.remove('on'), 160);
   }
+
 
   function addKey(cls, note, freq, letter, left) {
     const key = document.createElement('button');
@@ -371,7 +411,7 @@
   }
 
   whites.forEach(([note, freq, letter]) => addKey('w', note, freq, letter));
-  blacks.forEach(([note, freq, i, letter]) => addKey('b', note, freq, letter, (i + 1) / whites.length * 100 - 4.5));
+  blacks.forEach(([note, freq, i, letter]) => addKey('b', note, freq, letter, (i + 1) / whites.length * 100 - 4));
 
   document.addEventListener('keydown', e => {
     if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
