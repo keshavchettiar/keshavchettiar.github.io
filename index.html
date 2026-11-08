@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keshav Chettiar</title>
+<meta name="description" content="Keshav Chettiar, Year 2 IT student at Temasek Polytechnic. My projects, what I'm into, and how to reach me.">
+<style>
+  :root {
+    --bg: #F9E8D9;
+    --raised: #FFF6EE;
+    --soft-bg: #FFDEC7;
+    --line: #EFD3BE;
+    --line-strong: #EFA3A0;
+    --text: #493129;
+    --body: #5E4238;
+    --muted: #8B6F64;
+    --link: #8B597B;
+    --link-hover: #6E4361;
+    --on-link: #FFFFFF;
+    --accent2: #C46A67;
+    --shadow: 0 6px 20px -12px rgba(73,49,41,.35);
+    --band: #FFDEC7;
+    --hero-bg: #493129;
+    --hero-text: #FFF1E6;
+    --hero-muted: #EFA3A0;
+    --key: #FFF6EE;
+    --key-line: #EFA3A0;
+    --key-black: #493129;
+    --key-black-on: #8B597B;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    min-height: 100vh;
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+  }
+  a { color: var(--link); text-decoration: none; font-weight: 600; }
+  a:hover { color: var(--link-hover); text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--link); outline-offset: 3px; border-radius: 4px; }
+
+  main { max-width: 880px; margin: 0 auto; padding: 0 22px; }
+  main > section:first-child { padding-top: 64px; }
+
+  header.top {
+    max-width: 880px; margin: 0 auto; padding: 26px 22px 0;
+    display: flex; justify-content: space-between; align-items: center; font-size: 15px;
+  }
+  header.top .home { color: var(--text); text-decoration: none; font-weight: 700; }
+  header.top nav a { color: var(--muted); text-decoration: none; margin-left: 20px; }
+  header.top nav a:hover { color: var(--text); }
+
+  .hero-band { background: var(--hero-bg); color: var(--hero-text); }
+  .hero-band header.top .home { color: var(--hero-text); }
+  .hero-band header.top nav a { color: var(--hero-muted); }
+  .hero-band header.top nav a:hover { color: var(--hero-text); }
+  .intro { max-width: 880px; margin: 0 auto; padding: 72px 22px 76px; }
+  .intro p { color: var(--hero-muted) !important; }
+  .intro p strong { color: var(--hero-text) !important; }
+  section.band { background: var(--band); box-shadow: 0 0 0 100vmax var(--band); clip-path: inset(0 -100vmax); }
+  .intro-head { display: flex; align-items: center; gap: 20px; }
+  .intro img { width: 78px; height: 78px; border-radius: 50%; object-fit: cover; border: 2px solid var(--line); }
+  h1 { font-size: clamp(48px, 9vw, 84px); line-height: 1.1; letter-spacing: -0.02em; }
+  .intro p { color: var(--muted); font-size: 19px; margin-top: 18px; max-width: 34em; }
+  .intro p strong { color: var(--text); font-weight: 600; }
+  .links { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .links a {
+    font-size: 15px; font-weight: 600; padding: 10px 18px; border-radius: 10px;
+    border: 1px solid var(--line); background: var(--soft-bg); color: var(--text);
+    transition: background .25s, border-color .25s, transform .3s cubic-bezier(.34, 1.56, .64, 1);
+  }
+  .links a:hover { text-decoration: none; border-color: var(--line-strong); background: var(--soft-bg); color: var(--text); transform: translateY(-2px); }
+  .links a.main { background: var(--link); border-color: var(--link); color: var(--on-link); }
+  .links a.main:hover { background: var(--link-hover); border-color: var(--link-hover); color: var(--on-link); }
+
+  section { padding: 44px 0; }
+  h2 { font-size: 26px; margin-bottom: 18px; letter-spacing: -0.01em; }
+  section > p { color: var(--body); margin-bottom: 14px; }
+
+  .cards { display: grid; gap: 16px; align-items: start; }
+  .hobbies { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .hobbies .card { padding: 24px 24px 26px; }
+  .card {
+    background: var(--raised); box-shadow: var(--shadow); border: 1px solid var(--line); border-radius: 18px;
+    padding: 24px 26px 72px; position: relative; overflow: hidden;
+    transition: border-color .4s;
+  }
+  .card:hover, .card.open { border-color: var(--line-strong); }
+  .card h3 { font-size: 22px; }
+  .hobbies .card h3 { font-size: 19px; }
+  .card .meta { color: var(--accent2); font-size: 15px; margin-top: 2px; }
+  .card p { color: var(--body); margin-top: 12px; }
+  .card .tech { color: var(--muted); font-size: 15px; margin-top: 12px; }
+
+  .body { height: 0; overflow: hidden; }
+  .open .body, .closing .body { height: auto; }
+  .body ul { margin: 14px 0 0 20px; color: var(--body); }
+  .body li { margin-bottom: 6px; }
+  .body li::marker { color: var(--muted); }
+
+  .plus {
+    position: absolute; right: 18px; bottom: 18px; width: 40px; height: 40px; border-radius: 50%;
+    border: 1px solid var(--line-strong); background: var(--soft-bg); color: var(--text); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .3s, color .3s, border-color .3s, transform .45s cubic-bezier(.34, 1.56, .64, 1);
+  }
+  .plus:hover { transform: scale(1.1); background: var(--link); color: var(--on-link); border-color: var(--link); }
+  .open .plus { background: var(--link); color: var(--on-link); border-color: var(--link); }
+  .open .plus:hover { background: var(--link-hover); border-color: var(--link-hover); }
+  .plus:active { transform: scale(.88); transition-duration: .1s; }
+  .plus svg { width: 15px; height: 15px; transition: transform .6s cubic-bezier(.34, 1.4, .64, 1); }
+  .open .plus svg { transform: rotate(135deg); }
+
+  .skills p { color: var(--body); margin-bottom: 8px; }
+  .skills b { color: var(--text); }
+
+
+  .piano { position: relative; display: flex; height: 96px; max-width: 340px; margin-top: 14px; user-select: none; touch-action: manipulation; }
+  .piano button { cursor: pointer; border: 0; padding: 0; }
+  .piano .w { flex: 1; background: var(--key); border: 1px solid var(--key-line); border-radius: 0 0 6px 6px; margin: 0 1px; transition: background .12s; }
+  .piano .w.on { background: var(--link); }
+  .piano .b { position: absolute; top: 0; width: 9%; height: 60%; background: var(--key-black); border-radius: 0 0 4px 4px; z-index: 2; transition: background .12s; }
+  .piano .b.on { background: var(--key-black-on); }
+
+  .list li { list-style: none; padding: 12px 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; }
+  .list li:first-child { border-top: 0; padding-top: 0; }
+  .list small { display: block; color: var(--muted); font-size: 15px; }
+  .list .yr { color: var(--muted); font-size: 15px; white-space: nowrap; }
+
+  footer { max-width: 880px; margin: 0 auto; padding: 36px 22px 48px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); }
+
+  @media (max-width: 520px) {
+    .intro { padding-top: 48px; }
+    .intro-head { flex-direction: column; align-items: flex-start; }
+    .list li { flex-direction: column; gap: 0; }
+  }
+  @media (max-width: 760px) {
+    .hobbies { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+
+<div class="hero-band" id="top">
+<header class="top">
+  <a class="home" href="#top" id="home">Keshav Chettiar</a>
+  <nav>
+    <a href="#projects">Projects</a>
+    <a href="#outside">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+  <div class="intro">
+    <div class="intro-head">
+      <img src="photo.jpg" alt="Me" onerror="this.remove()">
+      <h1>Hi, I'm Keshav.</h1>
+    </div>
+    <p>I'm a Year 2 IT student at <strong>Temasek Poly</strong>. I like building websites and apps, and lately I've been getting into app security too. Right now I'm looking for an internship.</p>
+  </div>
+</div>
+
+<main>
+
+
+  <section id="projects">
+    <h2>Projects</h2>
+
+    <div class="cards projects">
+      <article class="card">
+        <h3>BiteWise AI</h3>
+        <div class="meta">Mobile App Development module, certified by NETS</div>
+        <p>A nutrition tracking app. You take a photo of your meal and it uses Google's Gemini API to estimate the calories and macros, so you don't have to type in every ingredient.</p>
+        <p>It's by far my proudest project. I added a premium subscription paid through NETS QR, and getting the sandbox payments and payment status working took a fair bit of effort. That part ended up getting a certificate from NETS and TP, signed by NETS' Managing Director.</p>
+        <div class="tech">Flutter, Dart, Firebase, Gemini API, NETS QR API, Riverpod</div>
+        <div class="body"><div class="inner">
+          <ul>
+            <li>Login with email or Google, using Firebase Authentication</li>
+            <li>Meal history saved in Firestore</li>
+            <li>A weekly dashboard that shows how your nutrition is trending</li>
+            <li>Riverpod for managing app state</li>
+          </ul>
+        </div></div>
+        <button class="plus" aria-expanded="false" aria-label="More about BiteWise AI"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1v14M1 8h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+      </article>
+
+      <article class="card">
+        <h3>Secure Web Portal</h3>
+        <div class="meta">Application Security (APSEC) module, Grade A</div>
+        <p>A web app with three kinds of users: members, the president and the treasurer. Each one can only see and do what their role allows. The module was all about making apps hard to break into, so most of my time went into the login and account side.</p>
+        <div class="tech">Node.js, Express, MongoDB, JWT, bcrypt</div>
+        <div class="body"><div class="inner">
+          <ul>
+            <li>Passwords are hashed and salted with bcrypt, and have to meet strength rules</li>
+            <li>JWT for login sessions</li>
+            <li>An account locks after 5 failed login attempts, and login requests are rate limited, so brute-forcing a password doesn't work</li>
+            <li>Forgot your password? It emails you a reset link (Nodemailer)</li>
+            <li>I followed the OWASP guidelines throughout</li>
+          </ul>
+        </div></div>
+        <button class="plus" aria-expanded="false" aria-label="More about the Secure Web Portal"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1v14M1 8h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+      </article>
+    </div>
+  </section>
+
+  <section class="skills band" id="skills">
+    <h2>What I use</h2>
+    <p><b>Languages and frameworks:</b> JavaScript, Dart, Flutter, Node.js, Express</p>
+    <p><b>Backend and security:</b> MongoDB, REST APIs, JWT, bcrypt, OWASP</p>
+    <p><b>Tools:</b> Firebase, Gemini API, NETS QR API, KNIME, VS Code, GitHub</p>
+  </section>
+
+  <section id="outside">
+    <h2>Outside of school</h2>
+
+    <div class="hobbies">
+      <article class="card">
+        <h3>Piano</h3>
+        <div class="meta">Grade 6, practical and theory</div>
+        <p>These days I mostly learn songs I like from sheet music, it's how I unwind after a long day. I also coded this small piano, so give it a go (the A to K keys work too):</p>
+        <div class="piano" id="piano" aria-label="Small playable piano"></div>
+      </article>
+
+      <article class="card">
+        <h3>Kyokushin karate</h3>
+        <div class="meta">Trained up to 5th kyu</div>
+        <p>Kyokushin is full contact, so training was tough, but that's where I made some really good friends. I don't train anymore, but the discipline stuck with me.</p>
+      </article>
+
+      <article class="card">
+        <h3>Badminton</h3>
+        <div class="meta">Head of Administration, 2 years in my secondary school's CCA</div>
+        <p>On top of playing, I took attendance, ran some of the trainings and helped keep the team organised. We also played in a few friendly tournaments.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="band" id="education">
+    <h2>Education and certificates</h2>
+    <ul class="list">
+      <li><div>Temasek Polytechnic<small>Diploma in Information Technology</small></div><span class="yr">2025 to 2028</span></li>
+      <li><div>Changkat Changi Secondary School<small>GCE O-Level</small></div></li>
+      <li><div>NETS QR Payment Integration<small>Certificate of Achievement from Temasek Poly and NETS</small></div><span class="yr">2026</span></li>
+      <li><div>KNIME Certification L1<small>KNIME</small></div><span class="yr">2025</span></li>
+      <li><div>Edusave Good Progress Award<small>Plus a Good Progress Award in 2024</small></div><span class="yr">2023</span></li>
+    </ul>
+  </section>
+
+  <section id="contact">
+    <h2>Get in touch</h2>
+    <p>If you have an internship opening, or just want to chat, the easiest way to reach me is email at keshavchettiar2008@gmail.com. I'm also on LinkedIn.</p>
+    <div class="links">
+      <a class="main" href="mailto:keshavchettiar2008@gmail.com">Email me</a>
+      <a href="https://www.linkedin.com/in/keshav-chettiar/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Made by me with plain HTML, CSS and JavaScript, hosted on GitHub Pages. Last updated November 2026.
+</footer>
+
+<script>
+  document.getElementById('home').addEventListener('click', e => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Cards: in a row, closed cards share one height and open cards share one
+  // height so the buttons line up. The card height is animated in pixels
+  // because CSS can't transition to height: auto.
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ease = 'cubic-bezier(.22, 1, .36, 1)';
+
+  function layout(group, animate) {
+    const cards = [...group.children];
+    const before = cards.map(c => c.offsetHeight);
+    cards.forEach(c => { c.getAnimations().forEach(a => a.cancel()); c.style.height = ''; });
+    const h = el => el.getBoundingClientRect().height;
+    const isOpen = cards.map(c => c.classList.contains('open'));
+    const closedNat = cards.map(c => Math.ceil(h(c) - h(c.querySelector('.body'))));
+    let target = cards.map((c, i) => isOpen[i] ? Math.ceil(h(c)) : closedNat[i]);
+    if (getComputedStyle(group).gridTemplateColumns.split(' ').length > 1) {
+      const closedH = Math.max(...closedNat);
+      const openH = Math.max(closedH, ...target.filter((_, i) => isOpen[i]));
+      target = isOpen.map(o => o ? openH : closedH);
+    }
+    cards.forEach((c, i) => {
+      c.style.height = target[i] + 'px';
+      if (animate && before[i] !== target[i]) {
+        c.animate([{ height: before[i] + 'px' }, { height: target[i] + 'px' }],
+          { duration: reduceMotion ? 200 : 550, easing: ease });
+      }
+    });
+  }
+  const relayout = () => document.querySelectorAll('.cards').forEach(g => layout(g, false));
+  window.addEventListener('load', relayout);
+  window.addEventListener('resize', relayout);
+  relayout();
+
+  document.querySelectorAll('.card .plus').forEach(btn => {
+    const card = btn.closest('.card');
+    const inner = card.querySelector('.inner');
+    btn.addEventListener('click', () => {
+      const open = !card.classList.contains('open');
+      btn.setAttribute('aria-expanded', open);
+      inner.getAnimations().forEach(a => a.cancel());
+      card.classList.toggle('open', open);
+      card.classList.toggle('closing', !open);
+      layout(card.parentElement, true);
+      if (open && !reduceMotion) {
+        inner.animate([{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }],
+          { duration: 450, delay: 100, easing: ease, fill: 'backwards' });
+      }
+      if (!open) {
+        inner.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: 'forwards' });
+        setTimeout(() => {
+          if (!card.classList.contains('open')) {
+            card.classList.remove('closing');
+            inner.getAnimations().forEach(a => a.cancel());
+          }
+        }, reduceMotion ? 220 : 580);
+      }
+    });
+  });
+
+  // Piano: notes are generated with the Web Audio API, no sound files.
+  const whites = [['C', 261.63, 'a'], ['D', 293.66, 's'], ['E', 329.63, 'd'], ['F', 349.23, 'f'],
+                  ['G', 392.00, 'g'], ['A', 440.00, 'h'], ['B', 493.88, 'j'], ['C', 523.25, 'k']];
+  const blacks = [['C#', 277.18, 0, 'w'], ['D#', 311.13, 1, 'e'], ['F#', 369.99, 3, 't'],
+                  ['G#', 415.30, 4, 'y'], ['A#', 466.16, 5, 'u']];
+  const piano = document.getElementById('piano');
+  const keys = {};
+  let audio;
+
+  function play(freq, key) {
+    audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+    const osc = audio.createOscillator();
+    const vol = audio.createGain();
+    const t = audio.currentTime;
+    osc.type = 'triangle';
+    osc.frequency.value = freq;
+    vol.gain.setValueAtTime(0.0001, t);
+    vol.gain.exponentialRampToValueAtTime(0.3, t + 0.01);
+    vol.gain.exponentialRampToValueAtTime(0.0001, t + 1.2);
+    osc.connect(vol).connect(audio.destination);
+    osc.start(t);
+    osc.stop(t + 1.25);
+    key.classList.add('on');
+    setTimeout(() => key.classList.remove('on'), 160);
+  }
+
+  function addKey(cls, note, freq, letter, left) {
+    const key = document.createElement('button');
+    key.className = cls;
+    key.setAttribute('aria-label', note);
+    if (left !== undefined) key.style.left = left + '%';
+    key.addEventListener('pointerdown', e => { e.preventDefault(); play(freq, key); });
+    key.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); play(freq, key); }
+    });
+    piano.appendChild(key);
+    keys[letter] = () => play(freq, key);
+  }
+
+  whites.forEach(([note, freq, letter]) => addKey('w', note, freq, letter));
+  blacks.forEach(([note, freq, i, letter]) => addKey('b', note, freq, letter, (i + 1) / whites.length * 100 - 4.5));
+
+  document.addEventListener('keydown', e => {
+    if (e.repeat || e.ctrlKey || e.metaKey || e.altKey) return;
+    const k = keys[e.key.toLowerCase()];
+    if (k) k();
+  });
+</script>
+</body>
+</html>
